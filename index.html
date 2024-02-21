@@ -38,8 +38,35 @@
     </nav> 
    </header> 
    <!-- Footer --> 
-   <footer id="footer"> 
-    <p class="copyright">您的IP：<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script type="text/javascript">document.write(returnCitySN["cip"])</script></p> 
+   <footer id="footer">
+    <p class="copyright" id="responseValue">您的IP信息：    </p>
+
+    <script>
+     // 使用 fetch API 发起 HTTP GET 请求
+     fetch('https://ip.useragentinfo.com/json')
+             .then(response => {
+              // 检查 HTTP 响应状态码
+              if (!response.ok) {
+               // 如果 HTTP 响应状态码不是 200，则抛出一个错误
+               throw new Error('发生错误：无法获取接口返回值');
+              }
+              // 返回一个解析后的 JSON 对象
+              return response.json();
+             })
+             .then(data => {
+              // 将接口返回的值显示在页面上
+              responseValue=document.getElementById('responseValue');
+              var originalText = responseValue.textContent;
+              var ip= JSON.stringify(data.ip);
+              var  new_str=originalText+ip;
+              responseValue.textContent=new_str;
+             })
+             .catch(error => {
+              // 输出错误信息
+              document.getElementById('responseValue').textContent = error.message;
+             });
+    </script>
+
     <p class="copyright"><script>
 		var mydate = new Date();
 		document.writeln("Copyright&nbsp;&copy;&nbsp;2021 - "+mydate.getFullYear()+'&nbsp;碎念_Nian<br />All&nbsp;Rights&nbsp;Reserved');</script></p> 
